@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ViewStub
+        android:id="@+id/noContentView"
+        android:layout="@layout/no_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <ViewStub
+        android:id="@+id/badNetworkView"
+        android:layout="@layout/bad_network_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <ViewStub
+        android:id="@+id/loadErrorView"
+        android:layout="@layout/load_error_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</merge>

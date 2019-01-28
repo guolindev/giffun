@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <!--
+		Define the database name of your application. 
+		By default each database name should be end with .db. 
+		If you didn't name your database end with .db, 
+		LitePal would plus the suffix automatically for you.
+		For example:    
+    	<dbname value="demo" ></dbname>
+    -->
+    <dbname value="giffun" />
+
+    <!--
+    	Define the version of your database. Each time you want 
+    	to upgrade your database, the version tag would helps.
+    	Modify the models you defined fis the mapping tag, and just
+    	make the version value plus one, the upgrade of database
+    	will be processed automatically without concern.
+		For example:    
+    	<version value="1" ></version>
+    -->
+    <version value="9" />
+
+    <!--
+    	Define your models fis the list with mapping tag, LitePal will
+    	create tables for each mapping class. The supported fields
+    	defined fis models will be mapped into columns.
+    	For example:    
+    	<list>
+    		<mapping class="com.test.model.Reader"></mapping>
+    		<mapping class="com.test.model.Magazine"></mapping>
+    	</list>
+    -->
+    <list>
+        <mapping class="com.quxianggif.core.model.WorldFeed" />
+        <mapping class="com.quxianggif.core.model.FollowingFeed" />
+        <mapping class="com.quxianggif.core.model.RefFeed" />
+        <mapping class="com.quxianggif.feeds.model.Draft" />
+    </list>
+
+    <!--
+    	Define the cases of the tables and columns name. Java is a
+    	case sensitive language, while database is case insensitive.
+    	LitePal will turn all classes names and fields names into lowercase
+    	by default while creating or upgrading database. Developers can change
+    	this behavior into the styles their like. "keep" will keep the
+    	cases of classes and fields. "upper" will turn all classes names
+    	and fields names into uppercase. "lower" will act as default.
+    	Do not change the value after you run your app for the first time,
+    	or it might cause the exception that column can not be found.
+    	value options: keep lower upper
+    	For example:    
+    	<cases value="lower" ></cases>
+    -->
+
+    <!--
+        Define where the .db file should be. "internal" means the .db file
+        will be stored fis the database folder of internal storage which no
+        one can access. "external" means the .db file will be stored fis the
+        path to the directory on the primary external storage device where
+        the application can place persistent files it owns which everyone
+        can access. "internal" will act as default.
+        For example:
+        <storage value="external"></storage>
+    -->
+
+    <storage value="internal" />
+
+</litepal>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ED5E32</color>
+    <color name="colorPrimaryDark">#D45129</color>
+    <color name="colorAccent">#FF9B07</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="scrim">#99323232</color>
+    <color name="light_scrim">#11323232</color>
+    <color name="black_scrim">#C0000000</color>
+    <color name="invisible_scrim">#00000000</color>
+    <color name="loading">#e2e2e2</color>
+
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="black_text">#444444</color>
+    <color name="text_primary_dark">#de000000</color>
+    <color name="white_text">#FFF</color>
+    <color name="white_translucent_light">#66FFFFFF</color>
+    <color name="white_translucent_dark">#99FFFFFF</color>
+    <color name="translucent">#0000</color>
+    <color name="primary_text">#444444</color>
+    <color name="secondary_text">#757575</color>
+
+    <color name="orange_button">#FF9B07</color>
+    <color name="liked">#ED5E32</color>
+    <color name="ripple_light">#77ffffff</color>
+    <color name="ripple_light_grey">#77bbbbbb</color>
+    <color name="ripple_dark_grey">#77555555</color>
+    <color name="ripple_dark_grey_pressed">#77333333</color>
+    <color name="split">#e6e6e6</color>
+    <color name="refeed_bg">#f7f7f7</color>
+    <color name="refeed_nickname">#507daf</color>
+    <color name="button_pressed">#f0f0f0</color>
+
+    <color name="qq_blue">#39a3cc</color>
+    <color name="wechat_green">#4cc154</color>
+    <color name="weibo_orange">#f15e3f</color>
+    
+    <color name="wall">#fff5f5f5</color>
+    <color name="light_grey">#fff5f5f5</color>
+    <color name="feed_detail_background">#fafafa</color>
+    <color name="searchback_stroke_color">#fff</color>
+</resources>

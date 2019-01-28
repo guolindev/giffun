@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wall">
+
+    <LinearLayout
+        android:id="@+id/recommendContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <View
+                android:id="@+id/leftLabel"
+                android:layout_width="5dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:background="@color/colorAccent"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/leftLabel"
+                android:layout_toRightOf="@id/leftLabel"
+                android:text="@string/hot_users"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="RelativeOverlap"/>
+
+            <Button
+                android:id="@+id/followAll"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"
+                android:visibility="gone"
+                android:text="@string/follow_all"
+                android:textSize="12sp"
+                android:textColor="@color/white_text"
+                android:theme="@style/GifFun.MaterialButton"/>
+
+            <ProgressBar
+                android:id="@+id/followAllLoading"
+                android:layout_width="72dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/split"
+                android:layout_alignParentBottom="true"
+                />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                android:overScrollMode="never"
+                />
+
+            <!-- 用于在用户正在进行关注全部操作的时候，屏蔽RecyclerView的可操作性。 -->
+            <View
+                android:id="@+id/blockRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/loading" />
+
+    <include layout="@layout/view_stub_holder" />
+
+</FrameLayout>

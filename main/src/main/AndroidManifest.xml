@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.quxianggif">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+    <application>
+
+        <activity
+            android:name=".feeds.ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GifFun.MainActivity"/>
+        <activity
+            android:name=".feeds.ui.PostFeedActivity"
+            android:label="@string/post_fun_pic"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".feeds.ui.SelectGifActivity"
+            android:label="@string/pick_gif_pic"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".common.ui.AlbumActivity"
+            android:label="@string/your_album"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".feeds.ui.FeedDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GifFun.FeedDetailActivity"/>
+        <activity
+            android:name=".user.ui.UserHomePageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GifFun.UserHomePageActivity">
+        </activity>
+        <activity
+            android:name=".user.ui.ModifyUserInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GifFun"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity
+            android:name=".comments.ui.CommentsActivity"
+            android:label="@string/all_comments"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity
+            android:name=".user.ui.FollowshipActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".user.ui.BrowserPhotoActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".feeds.ui.RepostFeedActivity"
+            android:label="@string/repost"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible">
+        </activity>
+        <activity
+            android:name=".user.ui.RecommendFollowingActivity"
+            android:label="@string/recommend_following"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CropImageActivity"/>
+        <activity
+            android:name=".settings.ui.SettingsActivity"
+            android:label="@string/settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/GifFun.SettingsActivity"/>
+        <activity
+            android:name=".feeds.ui.DraftActivity"
+            android:label="@string/draft_box"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".settings.ui.OpenSourceProjectsActivity"
+            android:label="@string/open_source_project_list"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".common.ui.WebViewActivity"
+            android:label="@string/title_about"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".feeds.ui.SearchActivity"
+            android:theme="@style/GifFun.SearchActivity">
+        </activity>
+        <activity
+            android:name=".report.ReportActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <meta-data
+            android:name="com.quxianggif.util.glide.GifFunModule"
+            android:value="GlideModule"/>
+
+    </application>
+
+</manifest>

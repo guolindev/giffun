@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@android:id/text1"
+      android:layout_width="match_parent"
+      android:layout_height="45dp"
+      android:textAppearance="?android:attr/textAppearanceListItemSmall"
+      android:gravity="center_vertical"
+      android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+      android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+      android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+      android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+      android:minHeight="?android:attr/listPreferredItemHeightSmall" />

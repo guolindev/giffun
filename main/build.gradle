@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+
+    compileSdkVersion COMPILE_SDK_VERSION as int
+
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api project(':core')
+    api project(':network')
+    api "com.android.support:recyclerview-v7:${SUPPORT_LIB_VERSION}"
+    api "com.android.support:cardview-v7:${SUPPORT_LIB_VERSION}"
+    api "com.android.support:design:${SUPPORT_LIB_VERSION}"
+    api "com.android.support:palette-v7:${SUPPORT_LIB_VERSION}"
+    api "com.android.support:percent:${SUPPORT_LIB_VERSION}"
+    api "com.android.support:preference-v7:${SUPPORT_LIB_VERSION}"
+    api "com.android.support:preference-v14:${SUPPORT_LIB_VERSION}"
+    api 'com.android.support:multidex:1.0.3'
+    api 'com.android.support.constraint:constraint-layout:1.1.3'
+    api 'org.greenrobot:eventbus:3.0.0'
+    api 'de.hdodenhof:circleimageview:2.1.0'
+    api 'com.umeng.umsdk:analytics:7.5.4'
+    api 'com.umeng.umsdk:common:1.5.4'
+    testImplementation 'junit:junit:4.12'
+}

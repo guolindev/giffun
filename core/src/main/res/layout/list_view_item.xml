@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="84dp" >
+
+    <ImageView
+        android:id="@+id/listViewLeftIcon"
+        android:layout_height="@dimen/list_view_left_icon_size"
+        android:layout_width="@dimen/list_view_left_icon_size"
+        android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"
+        android:src="@drawable/empty_color_patch_circular"
+        android:paddingLeft="8dp"
+        android:scaleY="0.5"
+        android:scaleX="0.5"
+        tools:ignore="RtlSymmetry" />
+    
+    <LinearLayout
+        android:id="@+id/listViewTextContainer"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/listViewLeftIcon"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/listViewTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text="Song Name"
+                android:layout_marginRight="20dp"
+                android:textSize="16sp" />
+            
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/listViewSubTextParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" >
+            
+            <TextView
+                android:id="@+id/listViewSubText"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:fadingEdge="horizontal"
+                android:gravity="top"
+                android:text="Artist Name"
+                android:layout_marginRight="20dp"
+                android:textSize="14sp"
+                android:singleLine="true"
+                android:textColor="#AAAAAA" />
+            
+        </RelativeLayout>
+        
+    </LinearLayout>
+
+
+
+</RelativeLayout>

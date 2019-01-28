@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:minHeight="?android:listPreferredItemHeight"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="horizontal"
+    android:baselineAligned="false">
+
+    <ImageView
+        android:id="@+id/avatarMe"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_gravity="center"
+        tools:src="@drawable/avatar_default" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/commentEdit"
+        android:hint="@string/hint_comment_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLength="300"
+        android:maxLines="3"
+        android:textSize="16sp"
+        android:textColor="@color/text_primary_dark" />
+
+    <Button
+        android:id="@+id/postComment"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/send"
+        android:textSize="14sp"
+        android:textColor="@color/white_text"
+        android:theme="@style/GifFun.MaterialButton"/>
+
+</LinearLayout>

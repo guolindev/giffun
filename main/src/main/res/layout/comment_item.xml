@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="15dp"
+        tools:src="@drawable/avatar_default" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/userInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp">
+
+            <TextView
+                android:id="@+id/nickname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="14sp"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold"
+                tools:text="志在愚乐" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/moreButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="6dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_more"
+                android:tint="@color/secondary_text"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="16sp"
+            android:textColor="@color/primary_text"
+            android:textIsSelectable="true"
+            tools:text="工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊。"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/postDate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|center_vertical"
+                android:gravity="bottom"
+                android:textSize="12sp"
+                android:textColor="@color/secondary_text"
+                tools:text="2017-12-12" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginEnd="2dp"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/goodCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:textSize="13sp"
+                    android:textColor="@color/secondary_text"
+                    tools:text="1024"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/goodImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/ic_good"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

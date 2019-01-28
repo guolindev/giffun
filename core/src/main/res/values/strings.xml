@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">core</string>
+    <string name="type">type</string>
+    <string name="path">path</string>
+    <string name="name">name</string>
+    <string name="size">size</string>
+    <string name="position">position</string>
+    <string name="folder_size">个文件</string>
+    <string name="unable_to_load_dir">不能打开此文件夹</string>
+    <string name="unable_to_open_file">不能打开此文件</string>
+    <string name="only_support_gif_file">只能选择GIF格式的文件</string>
+    <string name="crop_image_activity_title"></string>
+    <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>
+    <string name="crop_image_menu_rotate_right">Rotate</string>
+    <string name="crop_image_menu_crop">完成</string>
+    <string name="crop_image_menu_flip">Flip</string>
+    <string name="crop_image_menu_flip_horizontally">Flip horizontally</string>
+    <string name="crop_image_menu_flip_vertically">Flip vertically</string>
+
+    <string name="pick_image_intent_chooser_title">Select source</string>
+
+    <string name="crop_image_activity_no_permissions">Cancelling, required permissions are not granted</string>
+</resources>

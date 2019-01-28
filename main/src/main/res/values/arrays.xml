@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gif_play_speed_entries">
+        <item>1/3 速度</item>
+        <item>1/2 速度</item>
+        <item>正常速度</item>
+        <item>1.5 倍速度</item>
+        <item>2 倍速度</item>
+    </string-array>
+
+    <string-array name="gif_play_speed_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+</resources>

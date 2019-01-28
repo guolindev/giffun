@@ -1,0 +1,111 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="GifFun" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="colorControlHighlight">@color/ripple_light_grey</item>
+    </style>
+
+    <style name="GifFun.Translucent">
+        <item name="android:windowBackground">@color/black_scrim</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="GifFun.Invisible">
+        <item name="android:windowBackground">@color/invisible_scrim</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="GifFun.SplashActivity">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="GifFun.Translucent.LoginDialogActivity">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:textColor">@color/white_text</item>
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="GifFun.RegisterActivity">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColor">@color/white_text</item>
+        <item name="android:textColorHint">@color/white_text</item>
+        <item name="colorControlNormal">@color/white_text</item>
+        <item name="colorControlHighlight">@color/white_text</item>
+    </style>
+
+    <style name="GifFun.LoginActivity" parent="GifFun.RegisterActivity">
+    </style>
+
+    <style name="GifFun.MainActivity">
+    </style>
+
+    <style name="GifFun.FeedDetailActivity">
+    </style>
+    <style name="GifFun.CommentsActivity">
+    </style>
+    <style name="GifFun.UserHomePageActivity">
+    </style>
+    <style name="GifFun.SettingsActivity">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+
+    <style name="GifFun.SearchActivity">
+        <item name="android:windowBackground">@color/scrim</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+    </style>
+
+    <style name="CropImageActivity" parent="Base.Theme.AppCompat">
+    </style>
+
+    <style name="EditTextErrorAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white_text</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="GifFun.MaterialButton">
+        <item name="colorControlHighlight">@color/ripple_light</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+    </style>
+
+    <style name="GifFunAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="SearchWindowAnimations">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_rapidly</item>
+    </style>
+
+    <style name="MainActivityTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TransparentBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
+    </style>
+
+    <style name="TransparentBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+</resources>

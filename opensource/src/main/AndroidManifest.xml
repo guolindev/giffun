@@ -1,0 +1,81 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.quxianggif.opensource">
+
+    <application
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:name="com.quxianggif.GifFunApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:resizeableActivity="false"
+        android:supportsRtl="true"
+        android:theme="@style/GifFun"
+        android:allowBackup="false"
+        tools:targetApi="n"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <activity
+            android:name=".OpenSourceSplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GifFun.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".OpenSourceLoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GifFun.LoginActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <intent-filter>
+                <action android:name="com.quxianggif.opensource.ACTION_LOGIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.quxianggif.opensource.ACTION_LOGIN_WITH_TRANSITION"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".OpenSourceRegisterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GifFun.RegisterActivity"/>
+
+        <activity
+            android:name=".OpenSourceAboutActivity"
+            android:label="@string/title_about"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.quxianggif.opensource.ACTION_VIEW_ABOUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".util.GifFunFileProvider"
+            android:authorities="com.quxianggif.opensource.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+        <meta-data
+            android:name="APP_CHANNEL"
+            android:value="opensource"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5c18feb8f1f5568cb70001f9"/>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="opensource"/>
+
+    </application>
+</manifest>

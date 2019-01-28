@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:background="?attr/colorPrimary">
+
+    <ImageView
+        android:id="@+id/navHeaderBgImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/login_bg_wall"
+        />
+
+    <LinearLayout
+        android:id="@+id/userLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/avatarMe"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/avatar_default"
+            />
+
+        <TextView
+            android:id="@+id/nicknameMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white_text"
+            android:textSize="18sp"
+            tools:text="Tony Green"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@id/userLayout"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <TextView
+            android:id="@+id/descriptionMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/white_text"
+            android:textSize="14sp"
+            tools:text="简介：第一行代码第一行代码第一行代码第一行代码"
+            />
+
+        <ImageView
+            android:id="@+id/editImage"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_edit"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

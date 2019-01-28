@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loadingFooterLayout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <ProgressBar
+        android:id="@+id/loadProgress"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        />
+
+    <ImageView
+        android:id="@+id/loadingEnd"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:layout_margin="12dp"
+        android:src="@drawable/no_more_content" />
+
+    <TextView
+        android:id="@+id/loadFailed"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:text="@string/load_failed_click_to_reload" />
+
+</FrameLayout>

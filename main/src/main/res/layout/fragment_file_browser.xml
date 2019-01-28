@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wall">
+
+    <!-- View declaration. You can use all the standard view attributes here. -->
+    <com.filebrowser.View.FileBrowserView
+        android:id="@+id/fileBrowserView"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+</RelativeLayout>

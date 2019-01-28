@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- Optional header view that is placed above the file browser list. -->
+    <RelativeLayout
+        android:id="@+id/file_browser_list_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:drawSelectorOnTop="true" />
+
+    <!-- The actual file browser list. -->
+    <ListView
+        android:id="@+id/file_browser_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/file_browser_list_header"
+        android:drawSelectorOnTop="true" />
+
+</RelativeLayout>
