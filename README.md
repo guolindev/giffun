@@ -14,9 +14,8 @@
 
 <img src="screenshots/install_qrcode.png" width="180">
 
----
 
-### 屏幕截图
+## 屏幕截图
 
 <img src="screenshots/screenshot1.gif" width="25%" />
 <img src="screenshots/screenshot2.gif" width="25%" />
@@ -25,9 +24,8 @@
 <img src="screenshots/screenshot5.png" width="25%" />
 <img src="screenshots/screenshot6.png" width="25%" />
 
----
 
-### License
+## License
 
 趣享GIF的源代码仅供学习和交流使用，严禁用于任何商业用途，否则我将保持一切追究法律责任的权力。当然，如果你是通过这个App的源码学到了很多知识，然后应用到了自己的项目当中，这种我是非常欢迎的，但如果只是在我的源码基础上稍微改了改代码或者界面，然后就拿去用作赚钱目的，这种行为是不被允许的。
 
