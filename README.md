@@ -12,17 +12,17 @@
 
 微信扫一扫立刻安装：
 
-<img src="screenshots/install_qrcode.png">
+<img src="screenshots/install_qrcode.png" width="180">
 
 
 ### 屏幕截图
 
-<img src="screenshots/screenshot1.gif" width="50%" />
-<img src="screenshots/screenshot2.gif" width="50%" />
-<img src="screenshots/screenshot3.gif" width="50%" />
-<img src="screenshots/screenshot4.gif" width="50%" />
-<img src="screenshots/screenshot5.png" width="50%" />
-<img src="screenshots/screenshot6.png" width="50%" />
+<img src="screenshots/screenshot1.gif" width="25%" />
+<img src="screenshots/screenshot2.gif" width="25%" />
+<img src="screenshots/screenshot3.gif" width="25%" />
+<img src="screenshots/screenshot4.gif" width="25%" />
+<img src="screenshots/screenshot5.png" width="25%" />
+<img src="screenshots/screenshot6.png" width="25%" />
 
 
 ### License
