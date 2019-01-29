@@ -29,7 +29,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.quxianggif.R
-import com.quxianggif.comments.adaoter.CommentsAdapter
+import com.quxianggif.comments.adapter.CommentsAdapter
 import com.quxianggif.common.callback.InfiniteScrollListener
 import com.quxianggif.common.callback.LoadDataListener
 import com.quxianggif.common.ui.BaseActivity

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.quxianggif.comments.adaoter
+package com.quxianggif.comments.adapter
 
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
