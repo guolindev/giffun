@@ -28,7 +28,7 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.quxianggif.R
-import com.quxianggif.comments.adaoter.HotCommentsAdapter
+import com.quxianggif.comments.adapter.HotCommentsAdapter
 import com.quxianggif.comments.ui.CommentsActivity
 import com.quxianggif.core.GifFun
 import com.quxianggif.core.extension.logWarn
