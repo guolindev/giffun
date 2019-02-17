@@ -25,7 +25,11 @@ import com.quxianggif.R
 import com.quxianggif.core.GifFun
 import com.quxianggif.core.model.Version
 import com.quxianggif.core.util.AndroidVersion
+import com.quxianggif.event.FinishActivityEvent
+import com.quxianggif.event.MessageEvent
 import com.quxianggif.feeds.ui.MainActivity
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 应用程序登录界面的基类。
@@ -50,6 +54,13 @@ abstract class LoginActivity : AuthActivity() {
         // 登录成功，跳转到应用主界面
         MainActivity.actionStart(this)
         finish()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    override fun onMessageEvent(messageEvent: MessageEvent) {
+        if (messageEvent is FinishActivityEvent && LoginActivity::class.java == messageEvent.activityClass) {
+            finish()
+        }
     }
 
     companion object {
