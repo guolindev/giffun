@@ -135,9 +135,9 @@ class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSha
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        val checkUpdate = findPreference(getString(R.string.key_check_update))
-        if (checkUpdate is SwitchPreferenceCompat) {
-            if (!checkUpdate.isChecked) {
+        if (key == getString(R.string.key_check_update)) {
+            val checkUpdate = findPreference(key)
+            if (checkUpdate is SwitchPreferenceCompat && !checkUpdate.isChecked) {
                 showToast(GlobalUtil.getString(R.string.check_update_in_about_if_you_need), Toast.LENGTH_LONG)
             }
         }
