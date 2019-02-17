@@ -461,7 +461,7 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
         }
 
         photoUri = if (AndroidVersion.hasNougat()) {
-            FileProvider.getUriForFile(this, "com.quxianggif.fileprovider", outputImage)
+            FileProvider.getUriForFile(this, getAuthority(), outputImage)
         } else {
             Uri.fromFile(outputImage)
         }
@@ -586,6 +586,12 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun getAuthority() = if ("com.quxianggif.opensource" == GifFun.getPackageName()) {
+        "com.quxianggif.opensource.fileprovider"
+    } else {
+        "com.quxianggif.fileprovider"
     }
 
     companion object {
