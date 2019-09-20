@@ -312,7 +312,6 @@
     <string name="wechat">微信</string>
     <string name="wechat_memory">微信朋友圈</string>
     <string name="qq_friends">QQ</string>
-    <string name="qq_zone">QQ空间</string>
     <string name="weibo">微博</string>
     <string name="unable_to_share_before_gif_loaded">图片加载完成前无法分享</string>
     <string name="unable_to_save_before_gif_loaded">图片加载完成前不能保存</string>
