@@ -17,11 +17,11 @@
 package com.quxianggif.util
 
 import android.graphics.Bitmap
-import android.support.annotation.CheckResult
-import android.support.annotation.ColorInt
-import android.support.annotation.FloatRange
-import android.support.annotation.IntRange
-import android.support.v7.graphics.Palette
+import androidx.annotation.CheckResult
+import androidx.annotation.ColorInt
+import androidx.annotation.FloatRange
+import androidx.annotation.IntRange
+import androidx.palette.graphics.Palette
 import com.quxianggif.core.extension.logDebug
 
 /**
@@ -104,7 +104,7 @@ object ColorUtils {
      */
     fun isDark(@ColorInt color: Int): Boolean {
         val hsl = FloatArray(3)
-        android.support.v4.graphics.ColorUtils.colorToHSL(color, hsl)
+        androidx.core.graphics.ColorUtils.colorToHSL(color, hsl)
         return isDark(hsl)
     }
 

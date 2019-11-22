@@ -16,7 +16,7 @@
         android:layout_marginBottom="15dp"
         tools:src="@drawable/avatar_default" />
 
-    <android.support.percent.PercentRelativeLayout
+    <androidx.percentlayout.widget.PercentRelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -69,7 +69,7 @@
                 android:textColor="@color/secondary_text"
                 tools:text="1024"/>
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/goodImage"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -92,6 +92,6 @@
             android:textIsSelectable="true"
             tools:text="工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊，工工工啊啊啊啊啊啊。"
             />
-    </android.support.percent.PercentRelativeLayout>
+    </androidx.percentlayout.widget.PercentRelativeLayout>
 
 </LinearLayout>

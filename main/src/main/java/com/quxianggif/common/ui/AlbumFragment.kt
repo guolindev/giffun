@@ -23,7 +23,7 @@ import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View

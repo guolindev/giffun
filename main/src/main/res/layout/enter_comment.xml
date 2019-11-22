@@ -21,7 +21,7 @@
         android:layout_gravity="center"
         tools:src="@drawable/avatar_default" />
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/commentEdit"
         android:hint="@string/hint_comment_reply"
         android:layout_width="0dp"

@@ -18,7 +18,7 @@
         android:layout_marginBottom="15dp"
         tools:src="@drawable/avatar_default" />
 
-    <android.support.percent.PercentRelativeLayout
+    <androidx.percentlayout.widget.PercentRelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -52,6 +52,6 @@
             android:textColor="@color/primary_text"
             tools:text="hello worldhello worl"
             />
-    </android.support.percent.PercentRelativeLayout>
+    </androidx.percentlayout.widget.PercentRelativeLayout>
 
 </LinearLayout>

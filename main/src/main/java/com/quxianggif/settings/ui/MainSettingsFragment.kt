@@ -22,10 +22,10 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v7.app.AlertDialog
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.SwitchPreferenceCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import android.widget.Toast
 import com.quxianggif.R
 import com.quxianggif.common.ui.WebViewActivity
@@ -61,16 +61,16 @@ class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSha
         settingsActivity = activity as SettingsActivity
         settingsActivity.title = getString(R.string.settings)
 
-        val gifPlay = findPreference(getString(R.string.key_gif_play_control))
-        gifPlay.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        val gifPlay = findPreference<Preference>(getString(R.string.key_gif_play_control))
+        gifPlay?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             GifFun.getHandler().postDelayed(300) {
                 settingsActivity.gotoSettings(SettingsActivity.GIF_SETTINGS)
             }
             true
         }
 
-        val cleanCache = findPreference(getString(R.string.key_clean_cache))
-        cleanCache.onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
+        val cleanCache = findPreference<Preference>(getString(R.string.key_clean_cache))
+        cleanCache?.onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
             val cacheSize = GlideUtil.cacheSize
             if (cacheSize > ONE_MEGA_BYTE) {
                 val cacheSizeInMegaBytes = String.format(Locale.ENGLISH, "%.1f", cacheSize.toDouble() / 1024.0 / 1024.0) + "M"
@@ -92,8 +92,8 @@ class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSha
             true
         }
 
-        val appInfo = findPreference(getString(R.string.key_app_info))
-        appInfo.setOnPreferenceClickListener {
+        val appInfo = findPreference<Preference>(getString(R.string.key_app_info))
+        appInfo?.setOnPreferenceClickListener {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             val uri = Uri.parse("package:" + GlobalUtil.appPackage)
             intent.data = uri
@@ -101,20 +101,20 @@ class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSha
             true
         }
 
-        val about = findPreference(getString(R.string.key_about))
-        about.setOnPreferenceClickListener {
+        val about = findPreference<Preference>(getString(R.string.key_about))
+        about?.setOnPreferenceClickListener {
             AboutActivity.actionStart(settingsActivity)
             true
         }
 
-        val userTerms = findPreference(getString(R.string.key_user_terms))
-        userTerms.setOnPreferenceClickListener {
+        val userTerms = findPreference<Preference>(getString(R.string.key_user_terms))
+        userTerms?.setOnPreferenceClickListener {
             WebViewActivity.actionStart(settingsActivity, getString(R.string.title_user_terms), USER_TERMS_URL)
             true
         }
 
-        val logout = findPreference(getString(R.string.key_logout))
-        logout.setOnPreferenceClickListener {
+        val logout = findPreference<Preference>(getString(R.string.key_logout))
+        logout?.setOnPreferenceClickListener {
             logout()
             true
         }
@@ -136,7 +136,7 @@ class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSha
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == getString(R.string.key_check_update)) {
-            val checkUpdate = findPreference(key)
+            val checkUpdate = findPreference<Preference>(key)
             if (checkUpdate is SwitchPreferenceCompat && !checkUpdate.isChecked) {
                 showToast(GlobalUtil.getString(R.string.check_update_in_about_if_you_need), Toast.LENGTH_LONG)
             }

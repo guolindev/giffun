@@ -114,7 +114,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/nicknameInputLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                     android:layout_weight="1"
                     app:errorTextAppearance="@style/EditTextErrorAppearance">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/nicknameEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                         android:maxLines="1"
                         android:textColor="@color/text_primary_dark"/>
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/nicknameLimitText"
@@ -155,7 +155,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/descriptionInputLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                     android:layout_weight="1"
                     app:errorTextAppearance="@style/EditTextErrorAppearance">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/descriptionEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                         android:maxLength="60"
                         android:textColor="@color/text_primary_dark"/>
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/descriptionLimitText"

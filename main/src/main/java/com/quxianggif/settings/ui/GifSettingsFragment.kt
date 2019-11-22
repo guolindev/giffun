@@ -20,8 +20,9 @@ package com.quxianggif.settings.ui
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.preference.ListPreference
-import android.support.v7.preference.PreferenceFragmentCompat
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.quxianggif.R
 
 /**
@@ -44,8 +45,8 @@ class GifSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
             val currentGifPlaySpeed = PreferenceManager.getDefaultSharedPreferences(activity)
                     .getString(getString(R.string.key_gif_play_speed), "3") ?: "3"
 
-            val gifPlaySpeed = findPreference(getString(R.string.key_gif_play_speed))
-            gifPlaySpeed.summary = getGifPlaySpeedForDisplay(currentGifPlaySpeed)
+            val gifPlaySpeed = findPreference<Preference>(getString(R.string.key_gif_play_speed))
+            gifPlaySpeed?.summary = getGifPlaySpeedForDisplay(currentGifPlaySpeed)
         }
     }
 
@@ -60,7 +61,7 @@ class GifSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        val gifPlaySpeed = findPreference(getString(R.string.key_gif_play_speed))
+        val gifPlaySpeed = findPreference<Preference>(getString(R.string.key_gif_play_speed))
         if (gifPlaySpeed is ListPreference) {
             gifPlaySpeed.setSummary(gifPlaySpeed.entry)
         }

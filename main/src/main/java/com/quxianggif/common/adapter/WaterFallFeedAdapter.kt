@@ -20,9 +20,9 @@ package com.quxianggif.common.adapter
 import android.annotation.TargetApi
 import android.app.Activity
 import android.os.Build
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.transition.Transition
 import android.transition.TransitionInflater
 import android.view.View

@@ -78,7 +78,7 @@
                 android:baselineAligned="false"
                 android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/phoneInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                     android:layout_marginRight="35dp"
                     app:errorTextAppearance="@style/EditTextErrorAppearance">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/phoneNumberEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                         android:maxLines="1"
                         android:textColor="@color/white_text" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -107,14 +107,14 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="35dp">
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/verifyCodeLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:errorTextAppearance="@style/EditTextErrorAppearance">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/verifyCodeEdit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                             android:maxLines="1"
                             android:textColor="@color/white_text" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:id="@+id/getVerifyCode"

@@ -23,9 +23,9 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.TransitionRes
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SimpleItemAnimator
+import androidx.annotation.TransitionRes
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import android.text.InputType
 import android.text.TextUtils
 import android.transition.Transition

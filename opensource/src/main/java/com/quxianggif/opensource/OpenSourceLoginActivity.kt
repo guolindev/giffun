@@ -19,8 +19,8 @@ package com.quxianggif.opensource
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.support.transition.Fade
-import android.support.transition.TransitionManager
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import android.transition.Transition
 import android.view.View
 import com.quxianggif.common.callback.SimpleTransitionListener
