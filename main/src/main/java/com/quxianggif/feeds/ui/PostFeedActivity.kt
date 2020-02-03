@@ -20,6 +20,7 @@ package com.quxianggif.feeds.ui
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
@@ -84,10 +85,10 @@ class PostFeedActivity : BaseActivity(), View.OnClickListener, TextView.OnEditor
         setContentView(R.layout.activity_post_feed)
         val draft: Draft? = intent.getParcelableExtra(INTENT_DRAFT)
         if (draft != null) {
-            val gifPath = draft.gifPath
+            val gifUri = draft.gifUri
             val content = draft.content
-            if (gifPath.isNotBlank()) {
-                preloadSelectedGif(gifPath)
+            if (gifUri.isNotBlank()) {
+                preloadSelectedGif(Uri.parse(gifUri))
             }
             if (content.isNotBlank()) {
                 contentEdit.setText(content)
@@ -148,9 +149,9 @@ class PostFeedActivity : BaseActivity(), View.OnClickListener, TextView.OnEditor
         when (requestCode) {
             PICK_GIF -> if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
-                    val path = data.getStringExtra(AlbumActivity.IMAGE_PATH)
+                    val imageUri = data.getParcelableExtra<Uri>(AlbumActivity.IMAGE_URI)
                     // 选择好GIF图之后，开始对图片进行预加载
-                    preloadSelectedGif(path)
+                    preloadSelectedGif(imageUri)
                 }
             }
             else -> {
@@ -170,15 +171,12 @@ class PostFeedActivity : BaseActivity(), View.OnClickListener, TextView.OnEditor
     }
 
     private fun exit() {
-        if (contentEdit.text.toString().isNotBlank() || gifPlayTarget?.gifPath != null) {
+        if (contentEdit.text.toString().isNotBlank() || gifPlayTarget?.gifUri != null) {
             val dialog = AlertDialog.Builder(this, R.style.GifFunAlertDialogStyle)
                     .setMessage(GlobalUtil.getString(R.string.save_to_draft_or_not))
                     .setPositiveButton(GlobalUtil.getString(R.string.save)) { _, _ ->
-                        var gifPath = gifPlayTarget?.gifPath
-                        if (gifPath == null) {
-                            gifPath = ""
-                        }
-                        val draft = Draft(gifPath, contentEdit.text.toString(), Date())
+                        val gifUri = gifPlayTarget?.gifUri
+                        val draft = Draft(gifUri?.toString() ?: "", contentEdit.text.toString(), Date())
                         draft.save()
                         val event = SaveDraftEvent()
                         EventBus.getDefault().post(event)
@@ -218,10 +216,10 @@ class PostFeedActivity : BaseActivity(), View.OnClickListener, TextView.OnEditor
                 setCancelable(false)
                 show()
             }
-            if (it.gifPath == null || it.firstFrame == null) {
+            if (it.gifUri == null || it.firstFrame == null) {
                 return
             }
-            PostFeed.getResponse(it.gifPath, feedContent, it.firstFrame, object : ProgressCallback {
+            PostFeed.getResponse(it.gifUri, feedContent, it.firstFrame, object : ProgressCallback {
                 override fun onProgress(percent: Double) {
                     val percentInt = (percent * 100).toInt()
                     postFeedProgress.setMessage(String.format(GlobalUtil.getString(R.string.uploading_gif), percentInt))
@@ -239,7 +237,7 @@ class PostFeedActivity : BaseActivity(), View.OnClickListener, TextView.OnEditor
                             val coverUrl = postFeed.coverUrl
                             val gifUrl = postFeed.gifUrl
                             GlideUtil.saveBitmapToCache(it.firstFrame, coverUrl)
-                            GlideUtil.saveImagePathToCache(it.gifPath, gifUrl)
+//                            GlideUtil.saveImagePathToCache(it.gifPath, gifUrl)
                             val refreshFollowingFeedsEvent = RefreshFollowingFeedsEvent()
                             EventBus.getDefault().post(refreshFollowingFeedsEvent)
                             val finishActivityEvent = FinishActivityEvent()
@@ -312,18 +310,19 @@ class PostFeedActivity : BaseActivity(), View.OnClickListener, TextView.OnEditor
      * @param path
      * GIF图片的路径。
      */
-    private fun preloadSelectedGif(path: String) {
+    private fun preloadSelectedGif(imageUri: Uri?) {
+        if (imageUri == null) return
         Glide.with(this)
-                .load(path)
+                .load(imageUri)
                 .asGif()
-                .listener(object : RequestListener<String, GifDrawable> {
-                    override fun onException(e: Exception?, model: String, target: Target<GifDrawable>, isFirstResource: Boolean): Boolean {
+                .listener(object : RequestListener<Uri, GifDrawable> {
+                    override fun onException(e: Exception?, model: Uri, target: Target<GifDrawable>, isFirstResource: Boolean): Boolean {
                         showToast(GlobalUtil.getString(R.string.gif_format_error))
                         return true
                     }
 
-                    override fun onResourceReady(resource: GifDrawable, model: String, target: Target<GifDrawable>, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                        calculateWidgetValues(resource, path)
+                    override fun onResourceReady(resource: GifDrawable, model: Uri, target: Target<GifDrawable>, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                        calculateWidgetValues(resource, imageUri)
                         return true
                     }
                 })
@@ -338,7 +337,7 @@ class PostFeedActivity : BaseActivity(), View.OnClickListener, TextView.OnEditor
      * @param path
      * GIF图片的路径。
      */
-    private fun calculateWidgetValues(gifDrawable: GifDrawable, path: String) {
+    private fun calculateWidgetValues(gifDrawable: GifDrawable, imageUri: Uri) {
         val firstFrame = gifDrawable.firstFrame
         if (firstFrame != null) {
             val gifWidth = firstFrame.width
@@ -361,16 +360,16 @@ class PostFeedActivity : BaseActivity(), View.OnClickListener, TextView.OnEditor
 
             val loopForever = PreferenceManager.getDefaultSharedPreferences(this)
                     .getBoolean(getString(R.string.key_loop_gif_play), true)
-            gifPlayTarget = GifPlayTarget(selectedGif, path, firstFrame, loopForever)
+            gifPlayTarget = GifPlayTarget(selectedGif, imageUri, firstFrame, loopForever)
             Glide.with(this)
-                    .load(path)
+                    .load(imageUri)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .listener(object : RequestListener<String, GlideDrawable> {
-                        override fun onException(e: Exception, model: String, target: Target<GlideDrawable>, isFirstResource: Boolean): Boolean {
+                    .listener(object : RequestListener<Uri, GlideDrawable> {
+                        override fun onException(e: Exception, model: Uri, target: Target<GlideDrawable>, isFirstResource: Boolean): Boolean {
                             return false
                         }
 
-                        override fun onResourceReady(resource: GlideDrawable, model: String, target: Target<GlideDrawable>, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                        override fun onResourceReady(resource: GlideDrawable, model: Uri, target: Target<GlideDrawable>, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                             closeButton.visibility = View.VISIBLE
                             postWallLayout.setBackgroundColor(ContextCompat.getColor(this@PostFeedActivity, R.color.black))
                             return false

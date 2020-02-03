@@ -18,6 +18,7 @@
 package com.quxianggif.common.ui
 
 import android.app.Activity
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
@@ -30,11 +31,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import com.quxianggif.R
 import com.quxianggif.common.adapter.AlbumAdapter
+import com.quxianggif.common.model.Image
+import com.quxianggif.core.extension.logDebug
 import com.quxianggif.core.extension.logError
 import com.quxianggif.core.util.GlobalUtil
 import com.quxianggif.feeds.ui.GifAlbumFragment
 import kotlinx.android.synthetic.main.fragment_album.*
-import java.io.File
 import java.util.*
 
 /**
@@ -48,7 +50,7 @@ open class AlbumFragment : BaseFragment() {
     /**
      * 相册中图片路径的列表。
      */
-    var imageList: MutableList<String> = ArrayList()
+    var imageList: MutableList<Image> = ArrayList()
 
     /**
      * 控制相册每行展示几张图片。
@@ -62,7 +64,7 @@ open class AlbumFragment : BaseFragment() {
     /**
      * 指定相册中图片路径的列。
      */
-    var projection = arrayOf(MediaStore.Images.Media.DATA)
+    var projection = arrayOf(MediaStore.MediaColumns._ID, MediaStore.MediaColumns.SIZE, MediaStore.MediaColumns.MIME_TYPE)
 
     /**
      * 过滤相册中图片的类型，默认不过滤。
@@ -131,15 +133,18 @@ open class AlbumFragment : BaseFragment() {
                     imageList.clear()
                     if (cursor.moveToLast()) {
                         do {
-                            val path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-                            val file = File(path)
-                            if (file.length() > 5 * 1024) {
-                                imageList.add(path)
+                            val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
+                            val size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE))
+                            val mimeType = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE))
+                            val uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
+                            logDebug(TAG, "uri is $uri , file size is $size , mime type is $mimeType")
+                            val image = Image(uri, size, mimeType)
+                            if (image.size > 5 * 1024) {
+                                imageList.add(image)
                             }
                         } while (cursor.moveToPrevious())
                     }
                 }
-
             } catch (e: Exception) {
                 logError(TAG, e.message, e)
             } finally {

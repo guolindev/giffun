@@ -18,6 +18,7 @@
 package com.quxianggif.network.model
 
 import android.graphics.Bitmap
+import android.net.Uri
 
 import com.google.gson.annotations.SerializedName
 import com.quxianggif.network.request.PostFeedRequest
@@ -38,9 +39,9 @@ class PostFeed : Response() {
 
     companion object {
 
-        fun getResponse(gifPath: String, feedContent: String, firstFrame: Bitmap, callback: ProgressCallback) {
+        fun getResponse(uri: Uri, feedContent: String, firstFrame: Bitmap, callback: ProgressCallback) {
             PostFeedRequest()
-                    .gifPath(gifPath)
+                    .uri(uri)
                     .feedContent(feedContent)
                     .firstFrame(firstFrame)
                     .listen(callback)

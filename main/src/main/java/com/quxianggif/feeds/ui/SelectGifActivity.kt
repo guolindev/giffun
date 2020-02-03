@@ -21,20 +21,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.support.v4.app.Fragment
-import android.view.Menu
-import android.view.MenuItem
 import com.quxianggif.R
 import com.quxianggif.common.callback.PermissionListener
-import com.quxianggif.common.ui.AlbumActivity
 import com.quxianggif.common.ui.BaseActivity
-import com.quxianggif.common.ui.FileBrowserFragment
 import com.quxianggif.common.ui.NeedPermissionFragment
-import com.quxianggif.core.GifFun
-import com.quxianggif.core.extension.showToast
-import com.quxianggif.core.util.GlobalUtil
-import com.quxianggif.core.util.ImageUtil
 
 /**
  * 选择GIF图的Activity。
@@ -83,7 +74,7 @@ class SelectGifActivity : BaseActivity() {
         var fragment: Fragment? = null
         when (selectedFragment) {
             ALBUM_FRAGMENT -> fragment = GifAlbumFragment()
-            SDCARD_FRAGMENT -> fragment = FileBrowserFragment()
+//            SDCARD_FRAGMENT -> fragment = FileBrowserFragment()
         }
         if (fragment != null) {
             replaceFragment(fragment)
@@ -97,32 +88,33 @@ class SelectGifActivity : BaseActivity() {
         transaction.commitAllowingStateLoss()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_select_gif, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.album_mode -> {
-                selectedFragment = ALBUM_FRAGMENT
-                refreshPermissionStatus()
-                return true
-            }
-            R.id.sdcard_mode -> {
-                selectedFragment = SDCARD_FRAGMENT
-                refreshPermissionStatus()
-                return true
-            }
-            else -> {
-            }
-        }
-        if (::currentFragment.isInitialized && currentFragment is FileBrowserFragment) {
-            handleFileExplorerBackStack()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
+// Android 10 之后不允许直接访问SD卡，不再提供从SD卡中选择GIF图片的方式
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        menuInflater.inflate(R.menu.menu_select_gif, menu)
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.album_mode -> {
+//                selectedFragment = ALBUM_FRAGMENT
+//                refreshPermissionStatus()
+//                return true
+//            }
+//            R.id.sdcard_mode -> {
+//                selectedFragment = SDCARD_FRAGMENT
+//                refreshPermissionStatus()
+//                return true
+//            }
+//            else -> {
+//            }
+//        }
+//        if (::currentFragment.isInitialized && currentFragment is FileBrowserFragment) {
+//            handleFileExplorerBackStack()
+//            return true
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
@@ -130,38 +122,6 @@ class SelectGifActivity : BaseActivity() {
             else -> {
             }
         }
-    }
-
-    override fun onBackPressed() {
-        if (::currentFragment.isInitialized && currentFragment is FileBrowserFragment) {
-            handleFileExplorerBackStack()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    private fun handleFileExplorerBackStack() {
-        val frag = currentFragment as FileBrowserFragment
-        val parentDir = frag.fileBrowserView.parentDir
-        if (parentDir != null && parentDir.toString().contains(Environment.getExternalStorageDirectory().path)) {
-            frag.fileBrowserView.baseLayoutView?.showDir(parentDir)
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    fun setImagePath(imagePath: String) {
-        if (!ImageUtil.isGifValid(imagePath)) {
-            showToast(GlobalUtil.getString(R.string.gif_format_error))
-            return
-        } else if (ImageUtil.getImageSize(imagePath) > GifFun.GIF_MAX_SIZE) {
-            showToast(GlobalUtil.getString(R.string.gif_larger_than_20_mb))
-            return
-        }
-        val intent = Intent()
-        intent.putExtra(AlbumActivity.IMAGE_PATH, imagePath)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
     }
 
     companion object {

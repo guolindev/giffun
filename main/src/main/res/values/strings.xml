@@ -119,6 +119,7 @@
     <string name="must_agree_permission_to_save">必须同意权限才能保存</string>
     <string name="save_failed">保存失败</string>
     <string name="save_gif_success">GIF图已保存到：\nsdcard/quxiang/趣享GIF/%1$s</string>
+    <string name="save_gif_to_album_success">GIF图已保存到相册</string>
     <string name="save_gif_play_control_modify_or_not">是否保存对GIF播放控制的修改？</string>
 
     <!-- 发布feed -->

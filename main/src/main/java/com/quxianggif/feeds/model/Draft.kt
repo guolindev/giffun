@@ -17,6 +17,7 @@
 
 package com.quxianggif.feeds.model
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
@@ -29,7 +30,7 @@ import java.util.*
  * @since 2018/6/20
  */
 @Parcelize
-class Draft(val gifPath: String, val content: String, val time: Date) : LitePalSupport(), Parcelable {
+class Draft(val gifUri: String, val content: String, val time: Date) : LitePalSupport(), Parcelable {
     @IgnoredOnParcel
     var id: Long = 0
 }

@@ -17,13 +17,16 @@
 
 package com.quxianggif.network.request
 
+import android.net.Uri
 import android.text.TextUtils
 import com.qiniu.android.http.ResponseInfo
 import com.quxianggif.core.GifFun
+import com.quxianggif.core.extension.logDebug
 import com.quxianggif.core.extension.logWarn
 import com.quxianggif.core.util.GlobalUtil
 import com.quxianggif.network.exception.ChangeAvatarException
 import com.quxianggif.network.exception.ModifyUserInfoException
+import com.quxianggif.network.exception.PostFeedException
 import com.quxianggif.network.model.Callback
 import com.quxianggif.network.model.ModifyUserInfo
 import com.quxianggif.network.model.Response
@@ -31,6 +34,9 @@ import com.quxianggif.network.util.NetworkConst
 import com.quxianggif.network.util.QiniuManager
 import com.quxianggif.network.util.ResHandler
 import okhttp3.Headers
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.FileOutputStream
 import java.util.*
 
 /**
@@ -68,6 +74,10 @@ class ModifyUserInfoRequest : Request() {
      */
     private var avatarUri: String = ""
 
+    private var bgImageLocalUri: Uri? = null
+
+    private var avatarLocalUri: Uri? = null
+
     /**
      * 用于作为参数通知到GifFun服务器用户背景图的唯一地址。
      */
@@ -83,13 +93,13 @@ class ModifyUserInfoRequest : Request() {
         return this
     }
 
-    fun avatarFilePath(avatarFilePath: String): ModifyUserInfoRequest {
-        this.avatarFilePath = avatarFilePath
+    fun avatarLocalUri(avatarLocalUri: Uri?): ModifyUserInfoRequest {
+        this.avatarLocalUri = avatarLocalUri
         return this
     }
 
-    fun bgImageFilePath(bgImageFilePath: String): ModifyUserInfoRequest {
-        this.bgImageFilePath = bgImageFilePath
+    fun bgImageLocalUri(bgImageLocalUri: Uri?): ModifyUserInfoRequest {
+        this.bgImageLocalUri = bgImageLocalUri
         return this
     }
 
@@ -103,7 +113,7 @@ class ModifyUserInfoRequest : Request() {
 
     override fun listen(callback: Callback?) {
         mCallback = callback
-        if (TextUtils.isEmpty(avatarFilePath) && TextUtils.isEmpty(bgImageFilePath)) {
+        if (avatarLocalUri == null && bgImageLocalUri == null) {
             modifySimpleUserInfo()
         } else {
             modifyUserInfo()
@@ -122,6 +132,12 @@ class ModifyUserInfoRequest : Request() {
      * 修改完整的用户信息，可能包括用户的昵称、个人简介、头像和背景图。
      */
     private fun modifyUserInfo() {
+        avatarLocalUri?.let {
+            avatarFilePath = moveGifToExternalStorage(it)
+        }
+        bgImageLocalUri?.let {
+            bgImageFilePath = moveGifToExternalStorage(it)
+        }
         setListener(object : Callback {
             override fun onResponse(response: Response) {
                 if (!ResHandler.handleResponse(response)) {
@@ -232,6 +248,30 @@ class ModifyUserInfoRequest : Request() {
                 override fun onProgress(percent: Double) {}
             })
         }
+    }
+
+    /**
+     * 由于七牛云的上传API是接收图片的路径，因此需要将使用Uri表示的图片移动到应用程序的SD卡关联目录下，这样才能使用图片的路径来上传。
+     */
+    private fun moveGifToExternalStorage(uri: Uri): String {
+        val inputStream = GifFun.getContext().contentResolver.openInputStream(uri) ?: return ""
+        return GifFun.getContext().externalCacheDir?.let {
+            val path = "${it.path}/${System.nanoTime()}"
+            logDebug("image path is $path")
+            val bis = BufferedInputStream(inputStream)
+            val fos = FileOutputStream(path)
+            val bos = BufferedOutputStream(fos)
+            val byteArray = ByteArray(1024)
+            var bytes = bis.read(byteArray)
+            while (bytes > 0) {
+                bos.write(byteArray, 0, bytes)
+                bos.flush()
+                bytes = bis.read(byteArray)
+            }
+            bos.close()
+            fos.close()
+            path
+        } ?: ""
     }
 
     override fun params(): Map<String, String>? {

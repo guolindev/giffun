@@ -18,12 +18,16 @@
 package com.quxianggif.common.ui
 
 import android.Manifest
+import android.annotation.TargetApi
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.provider.Settings
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v4.app.ActivityCompat
@@ -36,16 +40,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.quxianggif.R
 import com.quxianggif.common.callback.PermissionListener
+import com.quxianggif.core.GifFun
+import com.quxianggif.core.extension.logWarn
 import com.quxianggif.core.extension.showToast
 import com.quxianggif.core.extension.showToastOnUiThread
+import com.quxianggif.core.util.AndroidVersion
 import com.quxianggif.core.util.GlobalUtil
 import com.quxianggif.core.util.ImageUtil
+import com.quxianggif.feeds.ui.FeedDetailActivity
 import com.quxianggif.feeds.ui.SelectGifActivity
 import com.quxianggif.util.FileUtil
+import com.quxianggif.util.glide.GlideUtil
 import kotlinx.android.synthetic.main.fragment_share_dialog.*
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileInputStream
 import java.util.*
-
 
 /**
  * 分享对话框的弹出界面。
@@ -70,9 +81,9 @@ open class ShareDialogFragment : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.fragment_share_dialog, container, false)
     }
 
-    fun showDialog(activity: AppCompatActivity, imageUri: String) {
+    fun showDialog(activity: AppCompatActivity, imagePath: String) {
         show(activity.supportFragmentManager, "share_dialog")
-        imagePath = imageUri
+        this.imagePath = imagePath
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -155,18 +166,13 @@ open class ShareDialogFragment : BottomSheetDialogFragment() {
 
     private fun share(packageName: String, className: String) {
         if (File(imagePath).exists()) {
-            val targetFile = copyGifCacheToQuxiangDir()
-            if (targetFile != null) {
-                val uri = ImageUtil.insertImageToSystem(attachedActivity, targetFile.path)
-                if (uri != null) {
-                    val shareIntent = Intent(Intent.ACTION_SEND)
-                    shareIntent.type = "image/gif"
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-                    shareIntent.setClassName(packageName, className)
-                    startActivity(shareIntent)
-                } else {
-                    showToast(GlobalUtil.getString(R.string.share_unknown_error))
-                }
+            val imageUri = getImageUri()
+            if (imageUri != null) {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "image/gif"
+                shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
+                shareIntent.setClassName(packageName, className)
+                startActivity(shareIntent)
             } else {
                 showToast(GlobalUtil.getString(R.string.share_unknown_error))
             }
@@ -177,37 +183,57 @@ open class ShareDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun saveToSDCard() {
-        val dir = File(Environment.getExternalStorageDirectory().toString() + "/quxiang/趣享GIF")
-        if (!dir.exists() && !dir.mkdirs()) {
-            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-            dismiss()
-            return
-        }
-        val targetFile = File(dir, GlobalUtil.currentDateString + ".gif")
-        if (targetFile.exists() && !targetFile.delete()) {
-            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-            dismiss()
-            return
-        }
-        val srcFile = File(imagePath)
-        if (!srcFile.exists()) {
-            showToastOnUiThread(GlobalUtil.getString(R.string.gif_file_not_exist))
-            dismiss()
-            return
-        }
-        if (FileUtil.copyFile(srcFile, targetFile)) {
-            ImageUtil.insertImageToSystem(attachedActivity, targetFile.path)
-            showToastOnUiThread(String.format(GlobalUtil.getString(R.string.save_gif_success), targetFile.name), Toast.LENGTH_LONG)
-            attachedActivity.runOnUiThread {
-                val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                val uri = Uri.fromFile(targetFile)
-                intent.data = uri
-                attachedActivity.sendBroadcast(intent)
+        if (AndroidVersion.hasQ()) {
+            if (saveGifAfterQ() != null) {
+                showToastOnUiThread(GlobalUtil.getString(R.string.save_gif_to_album_success), Toast.LENGTH_LONG)
+            } else {
+                showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
             }
         } else {
-            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+            val dir = File(Environment.getExternalStorageDirectory().toString() + "/quxiang/趣享GIF")
+            if (!dir.exists() && !dir.mkdirs()) {
+                showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+                dismiss()
+                return
+            }
+            val targetFile = File(dir, GlobalUtil.currentDateString + ".gif")
+            if (targetFile.exists() && !targetFile.delete()) {
+                showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+                dismiss()
+                return
+            }
+            val srcFile = File(imagePath)
+            if (!srcFile.exists()) {
+                showToastOnUiThread(GlobalUtil.getString(R.string.gif_file_not_exist))
+                dismiss()
+                return
+            }
+            if (FileUtil.copyFile(srcFile, targetFile)) {
+                ImageUtil.insertImageToSystem(attachedActivity, targetFile.path)
+                showToastOnUiThread(String.format(GlobalUtil.getString(R.string.save_gif_success), targetFile.name), Toast.LENGTH_LONG)
+                attachedActivity.runOnUiThread {
+                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                    val uri = Uri.fromFile(targetFile)
+                    intent.data = uri
+                    attachedActivity.sendBroadcast(intent)
+                }
+            } else {
+                showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+            }
         }
         dismiss()
+    }
+
+    private fun getImageUri(): Uri? {
+        if (AndroidVersion.hasQ()) {
+            return saveGifAfterQ()
+        } else {
+            val targetFile = copyGifCacheToQuxiangDir()
+            if (targetFile != null) {
+                return ImageUtil.insertImageToSystem(attachedActivity, targetFile.path)
+            }
+        }
+        return null
     }
 
     private fun copyGifCacheToQuxiangDir(): File? {
@@ -229,6 +255,38 @@ open class ShareDialogFragment : BottomSheetDialogFragment() {
         return null
     }
 
+    @TargetApi(Build.VERSION_CODES.Q)
+    private fun saveGifAfterQ(): Uri? {
+        val name = GlobalUtil.currentDateString + ".gif"
+        val values = ContentValues()
+        values.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+        values.put(MediaStore.MediaColumns.MIME_TYPE, "image/gif")
+        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        val uri = GifFun.getContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri == null) {
+            logWarn(TAG, "uri is null")
+            return null
+        }
+        val outputStream = GifFun.getContext().contentResolver.openOutputStream(uri)
+        if (outputStream == null) {
+            logWarn(TAG, "outputStream is null")
+            return null
+        }
+        val fis = FileInputStream(File(imagePath))
+        val bis = BufferedInputStream(fis)
+        val bos = BufferedOutputStream(outputStream)
+        val buffer = ByteArray(1024)
+        var bytes = bis.read(buffer)
+        while (bytes >= 0) {
+            bos.write(buffer, 0 , bytes)
+            bos.flush()
+            bytes = bis.read(buffer)
+        }
+        bos.close()
+        bis.close()
+        return uri
+    }
+
     /**
      * 检查和处理运行时权限，并将用户授权的结果通过PermissionListener进行回调。
      *
@@ -248,7 +306,7 @@ open class ShareDialogFragment : BottomSheetDialogFragment() {
                 requestPermissionList.add(permission)
             }
         }
-        if (!requestPermissionList.isEmpty()) {
+        if (requestPermissionList.isNotEmpty()) {
             requestPermissions(requestPermissionList.toTypedArray(), 1)
         } else {
             listener.onGranted()

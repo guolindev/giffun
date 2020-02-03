@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.quxianggif.R
 import com.quxianggif.common.callback.PermissionListener
+import com.quxianggif.core.extension.logDebug
 import com.quxianggif.core.extension.logWarn
 import com.theartofdev.edmodo.cropper.CropImage
 
@@ -88,7 +89,8 @@ class AlbumActivity : BaseActivity() {
                 val intent = Intent()
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == RESULT_OK) {
-                    intent.putExtra(AlbumActivity.IMAGE_PATH, result.uri.path)
+                    logDebug(TAG, "uri is ${result.uri} , uri path is ${result.uri.path}")
+                    intent.putExtra(AlbumActivity.IMAGE_URI, result.uri)
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     logWarn(TAG, "Cropping failed: " + result.error.message, result.error)
                 }
@@ -106,7 +108,7 @@ class AlbumActivity : BaseActivity() {
 
         const val REQUEST_PERMISSION_SETTING = 1
 
-        const val IMAGE_PATH = "image_path"
+        const val IMAGE_URI = "image_uri"
 
         const val CROP_WIDTH = "crop_width"
 

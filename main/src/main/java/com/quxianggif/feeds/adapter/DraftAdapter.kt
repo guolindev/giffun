@@ -18,6 +18,7 @@
 package com.quxianggif.feeds.adapter
 
 import android.app.Activity
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.ContextMenu
 import android.view.LayoutInflater
@@ -63,7 +64,7 @@ class DraftAdapter(val activity: Activity, private val draftList: MutableList<Dr
         holder.content.text = draft.content
         holder.time.text = getDraftTime(draft.time.time)
         Glide.with(activity)
-                .load(draft.gifPath)
+                .load(Uri.parse(draft.gifUri))
                 .asBitmap()
                 .placeholder(R.drawable.loading_bg_rect)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)

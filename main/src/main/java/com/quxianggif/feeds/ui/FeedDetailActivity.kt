@@ -20,14 +20,18 @@ package com.quxianggif.feeds.ui
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.annotation.TargetApi
 import android.app.Activity
 import android.app.ActivityOptions
+import android.content.ContentValues
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.preference.PreferenceManager
+import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -80,7 +84,10 @@ import kotlinx.android.synthetic.main.activity_feed_detail.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileInputStream
 
 /**
  * Feed详情页面，在这里显示GIF图、评论、点赞等内容。
@@ -261,37 +268,41 @@ class FeedDetailActivity : BaseActivity(), View.OnClickListener {
                 return true
             }
             R.id.save_to_phone -> {
-                handlePermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), object : PermissionListener {
-                    override fun onGranted() {
-                        saveGifToSDCard()
-                    }
+                if (AndroidVersion.hasQ()) {
+                    saveGifToSDCard()
+                } else {
+                    handlePermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), object : PermissionListener {
+                        override fun onGranted() {
+                            saveGifToSDCard()
+                        }
 
-                    override fun onDenied(deniedPermissions: List<String>) {
-                        var allNeverAskAgain = true
-                        for (deniedPermission in deniedPermissions) {
-                            if (ActivityCompat.shouldShowRequestPermissionRationale(this@FeedDetailActivity, deniedPermission)) {
-                                allNeverAskAgain = false
-                                break
+                        override fun onDenied(deniedPermissions: List<String>) {
+                            var allNeverAskAgain = true
+                            for (deniedPermission in deniedPermissions) {
+                                if (ActivityCompat.shouldShowRequestPermissionRationale(this@FeedDetailActivity, deniedPermission)) {
+                                    allNeverAskAgain = false
+                                    break
+                                }
+                            }
+                            // 所有的权限都被勾上不再询问时，跳转到应用设置界面，引导用户手动打开权限
+                            if (allNeverAskAgain) {
+                                val dialog = AlertDialog.Builder(this@FeedDetailActivity, R.style.GifFunAlertDialogStyle)
+                                        .setMessage(GlobalUtil.getString(R.string.allow_storage_permission_please))
+                                        .setPositiveButton(GlobalUtil.getString(R.string.settings)) { _, _ ->
+                                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                            val uri = Uri.fromParts("package", GlobalUtil.appPackage, null)
+                                            intent.data = uri
+                                            activity!!.startActivityForResult(intent, SelectGifActivity.REQUEST_PERMISSION_SETTING)
+                                        }
+                                        .setNegativeButton(GlobalUtil.getString(R.string.cancel), null)
+                                        .create()
+                                dialog.show()
+                            } else {
+                                showToast(GlobalUtil.getString(R.string.must_agree_permission_to_save))
                             }
                         }
-                        // 所有的权限都被勾上不再询问时，跳转到应用设置界面，引导用户手动打开权限
-                        if (allNeverAskAgain) {
-                            val dialog = AlertDialog.Builder(this@FeedDetailActivity, R.style.GifFunAlertDialogStyle)
-                                    .setMessage(GlobalUtil.getString(R.string.allow_storage_permission_please))
-                                    .setPositiveButton(GlobalUtil.getString(R.string.settings)) { _, _ ->
-                                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                        val uri = Uri.fromParts("package", GlobalUtil.appPackage, null)
-                                        intent.data = uri
-                                        activity!!.startActivityForResult(intent, SelectGifActivity.REQUEST_PERMISSION_SETTING)
-                                    }
-                                    .setNegativeButton(GlobalUtil.getString(R.string.cancel), null)
-                                    .create()
-                            dialog.show()
-                        } else {
-                            showToast(GlobalUtil.getString(R.string.must_agree_permission_to_save))
-                        }
-                    }
-                })
+                    })
+                }
                 return true
             }
             R.id.report -> {
@@ -873,45 +884,90 @@ class FeedDetailActivity : BaseActivity(), View.OnClickListener {
                 if (gifLoadStatus != GIF_LOAD_SUCCESS) {
                     showToastOnUiThread(getString(R.string.unable_to_save_before_gif_loaded))
                     return@Runnable
-                } else if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
-                    showToastOnUiThread(getString(R.string.unable_to_share_without_sdcard))
-                    return@Runnable
                 }
-                val dir = File(Environment.getExternalStorageDirectory().toString() + "/quxiang/趣享GIF")
-                if (!dir.exists() && !dir.mkdirs()) {
-                    showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-                    return@Runnable
-                }
-                val targetFile = File(dir, GlobalUtil.currentDateString + ".gif")
-                if (targetFile.exists() && !targetFile.delete()) {
-                    showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-                    return@Runnable
-                }
-                if (!targetFile.createNewFile()) {
-                    showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-                    return@Runnable
-                }
-                val gifCacheFile = GlideUtil.getCacheFile(mFeed.gif)
-                if (gifCacheFile == null || !gifCacheFile.exists()) {
-                    showToastOnUiThread(GlobalUtil.getString(R.string.gif_file_not_exist))
-                    return@Runnable
-                }
-                if (FileUtil.copyFile(gifCacheFile, targetFile)) {
-                    ImageUtil.insertImageToSystem(this, targetFile.path)
-                    showToastOnUiThread(String.format(GlobalUtil.getString(R.string.save_gif_success), targetFile.name), Toast.LENGTH_LONG)
-                    runOnUiThread {
-                        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                        val uri = Uri.fromFile(targetFile)
-                        intent.data = uri
-                        sendBroadcast(intent)
-                    }
-                } else {
-                    showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-                }
+                saveGifAfterQ()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }).start()
+    }
+
+    @TargetApi(Build.VERSION_CODES.Q)
+    private fun saveGifAfterQ() {
+        val gifCacheFile = GlideUtil.getCacheFile(mFeed.gif)
+        if (gifCacheFile == null || !gifCacheFile.exists()) {
+            showToastOnUiThread(GlobalUtil.getString(R.string.gif_file_not_exist))
+            return
+        }
+        val name = GlobalUtil.currentDateString + ".gif"
+        val values = ContentValues()
+        values.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+        values.put(MediaStore.MediaColumns.MIME_TYPE, "image/gif")
+        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri == null) {
+            logWarn(TAG, "uri is null")
+            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+            return
+        }
+        val outputStream = contentResolver.openOutputStream(uri)
+        if (outputStream == null) {
+            logWarn(TAG, "outputStream is null")
+            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+            return
+        }
+        val fis = FileInputStream(gifCacheFile)
+        val bis = BufferedInputStream(fis)
+        val bos = BufferedOutputStream(outputStream)
+        val buffer = ByteArray(1024)
+        var bytes = bis.read(buffer)
+        while (bytes >= 0) {
+            bos.write(buffer, 0 , bytes)
+            bos.flush()
+            bytes = bis.read(buffer)
+        }
+        bos.close()
+        bis.close()
+        showToastOnUiThread(GlobalUtil.getString(R.string.save_gif_to_album_success), Toast.LENGTH_LONG)
+    }
+
+    @TargetApi(Build.VERSION_CODES.P)
+    private fun saveGifBeforeQ() {
+        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
+            showToastOnUiThread(getString(R.string.unable_to_share_without_sdcard))
+            return
+        }
+        val dir = File(Environment.getExternalStorageDirectory().path + "/quxiang/趣享GIF")
+        if (!dir.exists() && !dir.mkdirs()) {
+            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+            return
+        }
+        val targetFile = File(dir, GlobalUtil.currentDateString + ".gif")
+        if (targetFile.exists() && !targetFile.delete()) {
+            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+            return
+        }
+        if (!targetFile.createNewFile()) {
+            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+            return
+        }
+        val gifCacheFile = GlideUtil.getCacheFile(mFeed.gif)
+        if (gifCacheFile == null || !gifCacheFile.exists()) {
+            showToastOnUiThread(GlobalUtil.getString(R.string.gif_file_not_exist))
+            return
+        }
+        if (FileUtil.copyFile(gifCacheFile, targetFile)) {
+            ImageUtil.insertImageToSystem(this, targetFile.path)
+            showToastOnUiThread(String.format(GlobalUtil.getString(R.string.save_gif_success), targetFile.name), Toast.LENGTH_LONG)
+            runOnUiThread {
+                val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                val uri = Uri.fromFile(targetFile)
+                intent.data = uri
+                sendBroadcast(intent)
+            }
+        } else {
+            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
+        }
     }
 
     /**

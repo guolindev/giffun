@@ -17,6 +17,7 @@
 
 package com.quxianggif.network.model
 
+import android.net.Uri
 import com.google.gson.annotations.SerializedName
 import com.quxianggif.network.request.ModifyUserInfoRequest
 
@@ -52,13 +53,13 @@ class ModifyUserInfo : Response() {
 
     companion object {
 
-        fun getResponse(nickname: String, description: String, avatarFilePath: String,
-                        bgImageFilePath: String, callback: Callback) {
+        fun getResponse(nickname: String, description: String, avatarLocalUri: Uri?,
+                        bgImageLocalUri: Uri?, callback: Callback) {
             ModifyUserInfoRequest()
                     .nickname(nickname)
                     .description(description)
-                    .avatarFilePath(avatarFilePath)
-                    .bgImageFilePath(bgImageFilePath)
+                    .avatarLocalUri(avatarLocalUri)
+                    .bgImageLocalUri(bgImageLocalUri)
                     .listen(callback)
         }
     }

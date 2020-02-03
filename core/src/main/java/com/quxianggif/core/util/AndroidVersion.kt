@@ -91,4 +91,12 @@ object AndroidVersion {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
     }
 
+    /**
+     * 判断当前手机系统版本API是否是29以上。
+     * @return 29以上返回true，否则返回false。
+     */
+    fun hasQ(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+    }
+
 }

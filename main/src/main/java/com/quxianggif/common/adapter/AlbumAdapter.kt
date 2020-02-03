@@ -27,6 +27,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.quxianggif.R
+import com.quxianggif.common.model.Image
 import com.quxianggif.core.extension.showToast
 import com.quxianggif.core.util.GlobalUtil
 import com.quxianggif.core.util.ImageUtil
@@ -44,7 +45,7 @@ open class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.ViewHolder>() {
 
     var mContext: Context? = null
 
-    var mImageList: List<String> = ArrayList()
+    var mImageList: List<Image> = ArrayList()
 
     protected var mImageSize: Int = 0
 
@@ -63,7 +64,7 @@ open class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.ViewHolder>() {
      * @param imageList
      * 相册中图片路径的列表
      */
-    fun setImageList(imageList: List<String>) {
+    fun setImageList(imageList: List<Image>) {
         mImageList = imageList
     }
 
@@ -87,9 +88,8 @@ open class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.ViewHolder>() {
             if (mContext is Activity) {
                 val activity = mContext as Activity
                 val position = holder.adapterPosition
-                val imagePath = mImageList[position]
-                val fileUri = Uri.fromFile(File(imagePath))
-                CropImage.activity(fileUri)
+                val image = mImageList[position]
+                CropImage.activity(image.uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setFixAspectRatio(true)
                         .setAspectRatio(cropWidth, cropHeight)
@@ -107,17 +107,17 @@ open class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: AlbumAdapter.ViewHolder, position: Int) {
         holder.image.layoutParams.width = mImageSize
         holder.image.layoutParams.height = mImageSize
-        val imagePath = mImageList[position]
-        if (ImageUtil.isGif(imagePath)) {
+        val image = mImageList[position]
+        if (image.mimeType == "image/gif") {
             Glide.with(mContext)
-                 .load(imagePath)
+                 .load(image.uri)
                  .asBitmap()
                  .placeholder(R.drawable.album_loading_bg)
                  .override(mImageSize, mImageSize)
                  .into(holder.image)
         } else {
             Glide.with(mContext)
-                 .load(imagePath)
+                 .load(image.uri)
                  .placeholder(R.drawable.album_loading_bg)
                  .override(mImageSize, mImageSize)
                  .into(holder.image)

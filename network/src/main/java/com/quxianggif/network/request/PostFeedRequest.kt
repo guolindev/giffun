@@ -18,10 +18,11 @@
 package com.quxianggif.network.request
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.text.TextUtils
-
 import com.qiniu.android.http.ResponseInfo
 import com.quxianggif.core.GifFun
+import com.quxianggif.core.extension.logDebug
 import com.quxianggif.core.extension.logWarn
 import com.quxianggif.core.util.GlobalUtil
 import com.quxianggif.core.util.ImageUtil
@@ -34,11 +35,12 @@ import com.quxianggif.network.util.MD5
 import com.quxianggif.network.util.NetworkConst
 import com.quxianggif.network.util.QiniuManager
 import com.quxianggif.network.util.ResHandler
-
-import java.io.File
-import java.util.HashMap
-
 import okhttp3.Headers
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.util.*
 import kotlin.concurrent.thread
 
 /**
@@ -96,8 +98,13 @@ class PostFeedRequest : Request() {
      */
     private var imgHeight: Int = 0
 
-    fun gifPath(gifPath: String): PostFeedRequest {
-        this.gifPath = gifPath
+    /**
+     * 使用Uri来标识gif图片的本地路径，以适配10.0系统
+     */
+    private lateinit var uri: Uri
+
+    fun uri(uri: Uri): PostFeedRequest {
+        this.uri = uri
         return this
     }
 
@@ -116,14 +123,14 @@ class PostFeedRequest : Request() {
     }
 
     override fun method(): Int {
-        return Request.POST
+        return POST
     }
 
     override fun listen(callback: Callback?) {
         if (callback is ProgressCallback) {
             mCallback = callback
             thread {
-                if (validateParams()) {
+                if (moveGifToExternalStorage() && validateParams()) {
                     preparePost()
                 }
             }
@@ -148,6 +155,34 @@ class PostFeedRequest : Request() {
     override fun headers(builder: Headers.Builder): Headers.Builder {
         buildAuthHeaders(builder, NetworkConst.GIF, NetworkConst.TOKEN, NetworkConst.IMG_WIDTH, NetworkConst.UID, NetworkConst.IMG_HEIGHT)
         return super.headers(builder)
+    }
+
+    /**
+     * 由于七牛云的上传API是接收图片的路径，因此需要将使用Uri表示的图片移动到应用程序的SD卡关联目录下，这样才能使用图片的路径来上传。
+     */
+    private fun moveGifToExternalStorage(): Boolean {
+        val inputStream = GifFun.getContext().contentResolver.openInputStream(uri)
+        if (inputStream == null) {
+            mCallback.onFailure(PostFeedException(PostFeedException.GIF_PATH_OR_FEED_CONTENT_IS_NULL))
+            return false
+        }
+        return GifFun.getContext().externalCacheDir?.let {
+            gifPath = "${it.path}/${System.currentTimeMillis()}.gif"
+            logDebug("gifPath is $gifPath")
+            val bis = BufferedInputStream(inputStream)
+            val fos = FileOutputStream(gifPath)
+            val bos = BufferedOutputStream(fos)
+            val byteArray = ByteArray(1024)
+            var bytes = bis.read(byteArray)
+            while (bytes > 0) {
+                bos.write(byteArray, 0, bytes)
+                bos.flush()
+                bytes = bis.read(byteArray)
+            }
+            bos.close()
+            fos.close()
+            true
+        } ?: false
     }
 
     /**

@@ -19,6 +19,7 @@ package com.quxianggif.util.glide
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.widget.ImageView
 
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
@@ -37,7 +38,7 @@ class GifPlayTarget @JvmOverloads constructor(view: ImageView,
                                                * 获取选中的GIF图的路径。
                                                * @return 选中的GIF图的路径。
                                                */
-                                              val gifPath: String? = null,
+                                              val gifUri: Uri? = null,
                                               /**
                                                * 获取选中的GIF图的第一帧的Bitmap。
                                                * @return 选中的GIF图的第一帧的Bitmap。

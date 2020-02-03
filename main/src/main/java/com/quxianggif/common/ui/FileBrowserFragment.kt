@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.activity_select_gif.*
 
 import java.io.File
 
+@Deprecated("deprecated in Android Q")
 class FileBrowserFragment : BaseFragment(), AdapterView.OnItemClickListener {
 
     private lateinit var activity: SelectGifActivity
@@ -67,7 +68,7 @@ class FileBrowserFragment : BaseFragment(), AdapterView.OnItemClickListener {
         }
 
         override fun getImagePath(imagePath: String) {
-            activity.setImagePath(imagePath)
+//            activity.setImagePath(imagePath)
         }
 
     }

@@ -160,7 +160,6 @@ object GlideUtil {
         } catch (e: Exception) {
             logError(TAG, e.message, e)
         }
-
         return false
     }
 

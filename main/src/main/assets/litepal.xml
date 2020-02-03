@@ -19,7 +19,7 @@
 		For example:    
     	<version value="1" ></version>
     -->
-    <version value="9" />
+    <version value="10" />
 
     <!--
     	Define your models fis the list with mapping tag, LitePal will

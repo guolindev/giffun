@@ -58,16 +58,17 @@ class GifAlbumAdapter : AlbumAdapter() {
             if (mContext is Activity) {
                 val activity = mContext as Activity
                 val position = holder.adapterPosition
-                val imagePath = mImageList[position]
-                if (!ImageUtil.isGifValid(imagePath)) {
-                    showToast(GlobalUtil.getString(R.string.gif_format_error))
-                    return@OnClickListener
-                } else if (ImageUtil.getImageSize(imagePath) > GifFun.GIF_MAX_SIZE) {
+                val image = mImageList[position]
+//                if (!ImageUtil.isGifValid(imagePath)) {
+//                    showToast(GlobalUtil.getString(R.string.gif_format_error))
+//                    return@OnClickListener
+//                }
+                if (image.size > GifFun.GIF_MAX_SIZE) {
                     showToast(GlobalUtil.getString(R.string.gif_larger_than_20_mb))
                     return@OnClickListener
                 }
                 val intent = Intent()
-                intent.putExtra(AlbumActivity.IMAGE_PATH, imagePath)
+                intent.putExtra(AlbumActivity.IMAGE_URI, image.uri)
                 activity.setResult(Activity.RESULT_OK, intent)
                 activity.finish()
             } else {
@@ -76,10 +77,8 @@ class GifAlbumAdapter : AlbumAdapter() {
         })
         holder.image.setOnLongClickListener {
             playingGif = GlideUtil.getGifDrawable(holder.image)
-            if (playingGif != null) {
-                // 如果是GIF图，按住情况下播放图片
-                playingGif!!.start()
-            }
+            // 如果是GIF图，按住情况下播放图片
+            playingGif?.start()
             false
         }
         holder.image.setOnTouchListener(View.OnTouchListener { _, event ->
@@ -108,7 +107,7 @@ class GifAlbumAdapter : AlbumAdapter() {
         val image = mImageList[position]
         // 使用Glide加载GIF图
         Glide.with(mContext)
-                .load(image)
+                .load(image.uri)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.drawable.album_loading_bg)
                 .override(mImageSize, mImageSize)
@@ -116,7 +115,6 @@ class GifAlbumAdapter : AlbumAdapter() {
     }
 
     companion object {
-
         private const val TAG = "GifAlbumAdapter"
     }
 

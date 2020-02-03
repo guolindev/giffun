@@ -150,7 +150,7 @@ abstract class AuthActivity : BaseActivity() {
         /**
          * 游客登录的类型，此登录只在测试环境下有效，线上环境没有此项功能。
          */
-        const val TYPE_GUEST_LOGIN = -1
+        const val TYPE_GUEST_LOGIN = 0
     }
 
 }

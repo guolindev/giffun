@@ -82,9 +82,9 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
 
     private var srcDescription: String = ""
 
-    private var userAvatarPath: String = ""
+    private var userAvatarUri: Uri? = null
 
-    private var userBgImagePath: String = ""
+    private var userBgImageUri: Uri? = null
 
     private var isEditDescription: Boolean = false
 
@@ -181,10 +181,10 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
      * @return 修改了个人信息返回true，否则返回false。
      */
     private val isUserInfoChanged: Boolean
-        get() = !(nicknameEdit.text.toString() == srcNickname
-                && descriptionEdit.text.toString() == srcDescription
-                && TextUtils.isEmpty(userAvatarPath)
-                && TextUtils.isEmpty(userBgImagePath))
+        get() = nicknameEdit.text.toString() != srcNickname
+                || descriptionEdit.text.toString() != srcDescription
+                || userAvatarUri != null
+                || userBgImageUri != null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -303,7 +303,7 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
             }
             CHOOSE_FROM_ALBUM -> if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
-                    showCroppedPhoto(data.getStringExtra(AlbumActivity.IMAGE_PATH))
+                    showCroppedPhoto(data.getParcelableExtra(AlbumActivity.IMAGE_URI))
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 showToast(GlobalUtil.getString(R.string.crop_failed))
@@ -311,7 +311,7 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == Activity.RESULT_OK) {
-                    showCroppedPhoto(result.uri.path ?: "")
+                    showCroppedPhoto(result.uri)
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     logWarn(TAG, "Cropping failed: " + result.error.message, result.error)
                     showToast(GlobalUtil.getString(R.string.crop_failed))
@@ -356,9 +356,7 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
             showProgressDialog(null, GlobalUtil.getString(R.string.hold_on_for_saving))
             val nickname = if (nicknameEdit.text.toString().trim() == srcNickname) "" else nicknameEdit.text.toString().trim()
             val description = if (descriptionEdit.text.toString().trim() == srcDescription) "" else descriptionEdit.text.toString().trim()
-            val avatarFilePath = if (TextUtils.isEmpty(userAvatarPath)) "" else userAvatarPath
-            val bgImageFilePath = if (TextUtils.isEmpty(userBgImagePath)) "" else userBgImagePath
-            ModifyUserInfo.getResponse(nickname, description, avatarFilePath, bgImageFilePath, object : Callback {
+            ModifyUserInfo.getResponse(nickname, description, userAvatarUri, userBgImageUri, object : Callback {
                 override fun onResponse(response: Response) {
                     if (activity == null) {
                         return
@@ -381,16 +379,16 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
                                 if (srcAvatar != modifyUserInfo.avatar) {
                                     UserUtil.saveAvatar(modifyUserInfo.avatar)
                                     event.modifyAvatar = true
-                                    if (!TextUtils.isEmpty(userAvatarPath)) {
-                                        GlideUtil.saveImagePathToCache(userAvatarPath, modifyUserInfo.avatar)
-                                    }
+//                                    if (!TextUtils.isEmpty(userAvatarUri)) {
+//                                        GlideUtil.saveImagePathToCache(userAvatarUri, modifyUserInfo.avatar)
+//                                    }
                                 }
                                 if (srcBgImage != modifyUserInfo.bgImage) {
                                     UserUtil.saveBgImage(modifyUserInfo.bgImage)
                                     event.modifyBgImage = true
-                                    if (!TextUtils.isEmpty(userBgImagePath)) {
-                                        GlideUtil.saveImagePathToCache(userBgImagePath, modifyUserInfo.bgImage)
-                                    }
+//                                    if (!TextUtils.isEmpty(userBgImageUri)) {
+//                                        GlideUtil.saveImagePathToCache(userBgImageUri, modifyUserInfo.bgImage)
+//                                    }
                                 }
                                 EventBus.getDefault().post(event)
 
@@ -504,21 +502,22 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
                 .start(this)
     }
 
-    private fun showCroppedPhoto(imagePath: String) {
+    private fun showCroppedPhoto(imageUri: Uri?) {
+        if (imageUri == null) return
         if (action == TAKE_AVATAR_PICTURE) {
-            userAvatarPath = imagePath
-            logDebug(TAG, "userAvatarPath is $userAvatarPath")
+            userAvatarUri = imageUri
+            logDebug(TAG, "userAvatarPath is $userAvatarUri")
             Glide.with(this)
-                    .load(userAvatarPath)
+                    .load(userAvatarUri)
                     .asBitmap()
                     .transform(CropCircleTransformation(this))
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .placeholder(R.drawable.loading_bg_circle)
                     .error(R.drawable.avatar_default)
                     .into(userAvatar)
-            if (TextUtils.isEmpty(srcBgImage) && TextUtils.isEmpty(userBgImagePath)) {
+            if (TextUtils.isEmpty(srcBgImage) && userBgImageUri == null) {
                 Glide.with(this)
-                        .load(userAvatarPath)
+                        .load(userAvatarUri)
                         .asBitmap()
                         .transform(BlurTransformation(this, 20))
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -526,9 +525,9 @@ class ModifyUserInfoActivity : BaseActivity(), View.OnClickListener {
                         .into(userBgImage)
             }
         } else if (action == TAKE_BG_IMAGE_PICTURE) {
-            userBgImagePath = imagePath
+            userBgImageUri = imageUri
             Glide.with(this)
-                    .load(userBgImagePath)
+                    .load(userBgImageUri)
                     .asBitmap()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .listener(userBgLoadListener)
