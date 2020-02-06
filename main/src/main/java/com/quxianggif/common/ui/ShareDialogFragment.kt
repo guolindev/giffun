@@ -18,13 +18,11 @@
 package com.quxianggif.common.ui
 
 import android.Manifest
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -47,10 +45,8 @@ import com.quxianggif.core.extension.showToastOnUiThread
 import com.quxianggif.core.util.AndroidVersion
 import com.quxianggif.core.util.GlobalUtil
 import com.quxianggif.core.util.ImageUtil
-import com.quxianggif.feeds.ui.FeedDetailActivity
 import com.quxianggif.feeds.ui.SelectGifActivity
 import com.quxianggif.util.FileUtil
-import com.quxianggif.util.glide.GlideUtil
 import kotlinx.android.synthetic.main.fragment_share_dialog.*
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
@@ -183,85 +179,28 @@ open class ShareDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun saveToSDCard() {
-        if (AndroidVersion.hasQ()) {
-            if (saveGifAfterQ() != null) {
-                showToastOnUiThread(GlobalUtil.getString(R.string.save_gif_to_album_success), Toast.LENGTH_LONG)
-            } else {
-                showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-            }
+        if (saveGifToAlbum() != null) {
+            showToastOnUiThread(GlobalUtil.getString(R.string.save_gif_to_album_success), Toast.LENGTH_LONG)
         } else {
-            val dir = File(Environment.getExternalStorageDirectory().toString() + "/quxiang/趣享GIF")
-            if (!dir.exists() && !dir.mkdirs()) {
-                showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-                dismiss()
-                return
-            }
-            val targetFile = File(dir, GlobalUtil.currentDateString + ".gif")
-            if (targetFile.exists() && !targetFile.delete()) {
-                showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-                dismiss()
-                return
-            }
-            val srcFile = File(imagePath)
-            if (!srcFile.exists()) {
-                showToastOnUiThread(GlobalUtil.getString(R.string.gif_file_not_exist))
-                dismiss()
-                return
-            }
-            if (FileUtil.copyFile(srcFile, targetFile)) {
-                ImageUtil.insertImageToSystem(attachedActivity, targetFile.path)
-                showToastOnUiThread(String.format(GlobalUtil.getString(R.string.save_gif_success), targetFile.name), Toast.LENGTH_LONG)
-                attachedActivity.runOnUiThread {
-                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                    val uri = Uri.fromFile(targetFile)
-                    intent.data = uri
-                    attachedActivity.sendBroadcast(intent)
-                }
-            } else {
-                showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-            }
+            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
         }
         dismiss()
     }
 
     private fun getImageUri(): Uri? {
-        if (AndroidVersion.hasQ()) {
-            return saveGifAfterQ()
-        } else {
-            val targetFile = copyGifCacheToQuxiangDir()
-            if (targetFile != null) {
-                return ImageUtil.insertImageToSystem(attachedActivity, targetFile.path)
-            }
-        }
-        return null
+        return saveGifToAlbum()
     }
 
-    private fun copyGifCacheToQuxiangDir(): File? {
-        val dir = File(Environment.getExternalStorageDirectory().toString() + "/quxiang/share")
-        if (!dir.exists() && !dir.mkdirs()) {
-            return null
-        }
-        val srcFile = File(imagePath)
-        if (!srcFile.exists()) {
-            return null
-        }
-        val targetFile = File(dir, srcFile.name.substringBeforeLast(".") + ".gif")
-        if (targetFile.exists()) {
-            return targetFile
-        }
-        if (FileUtil.copyFile(srcFile, targetFile)) {
-            return targetFile
-        }
-        return null
-    }
-
-    @TargetApi(Build.VERSION_CODES.Q)
-    private fun saveGifAfterQ(): Uri? {
+    private fun saveGifToAlbum(): Uri? {
         val name = GlobalUtil.currentDateString + ".gif"
         val values = ContentValues()
         values.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
         values.put(MediaStore.MediaColumns.MIME_TYPE, "image/gif")
-        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        if (AndroidVersion.hasQ()) {
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        } else {
+            values.put(MediaStore.MediaColumns.DATA, "${Environment.getExternalStorageDirectory().path}/${Environment.DIRECTORY_DCIM}/$name")
+        }
         val uri = GifFun.getContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         if (uri == null) {
             logWarn(TAG, "uri is null")

@@ -136,7 +136,7 @@ object ImageUtil {
     }
 
     /**
-     * 将指定图片路径插入到系统的相册当中。
+     * 9.0及之前系统将指定图片路径插入到系统的相册当中的方法。
      * @return 插入到相册之后图片对应的Uri。
      */
     fun insertImageToSystem(context: Context, imagePath: String): Uri? {

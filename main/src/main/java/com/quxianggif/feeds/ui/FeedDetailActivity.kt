@@ -885,15 +885,14 @@ class FeedDetailActivity : BaseActivity(), View.OnClickListener {
                     showToastOnUiThread(getString(R.string.unable_to_save_before_gif_loaded))
                     return@Runnable
                 }
-                saveGifAfterQ()
+                saveGifToAlbum()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }).start()
     }
 
-    @TargetApi(Build.VERSION_CODES.Q)
-    private fun saveGifAfterQ() {
+    private fun saveGifToAlbum() {
         val gifCacheFile = GlideUtil.getCacheFile(mFeed.gif)
         if (gifCacheFile == null || !gifCacheFile.exists()) {
             showToastOnUiThread(GlobalUtil.getString(R.string.gif_file_not_exist))
@@ -903,7 +902,11 @@ class FeedDetailActivity : BaseActivity(), View.OnClickListener {
         val values = ContentValues()
         values.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
         values.put(MediaStore.MediaColumns.MIME_TYPE, "image/gif")
-        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        if (AndroidVersion.hasQ()) {
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        } else {
+            values.put(MediaStore.MediaColumns.DATA, "${Environment.getExternalStorageDirectory().path}/${Environment.DIRECTORY_DCIM}/$name")
+        }
         val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         if (uri == null) {
             logWarn(TAG, "uri is null")
@@ -929,45 +932,6 @@ class FeedDetailActivity : BaseActivity(), View.OnClickListener {
         bos.close()
         bis.close()
         showToastOnUiThread(GlobalUtil.getString(R.string.save_gif_to_album_success), Toast.LENGTH_LONG)
-    }
-
-    @TargetApi(Build.VERSION_CODES.P)
-    private fun saveGifBeforeQ() {
-        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
-            showToastOnUiThread(getString(R.string.unable_to_share_without_sdcard))
-            return
-        }
-        val dir = File(Environment.getExternalStorageDirectory().path + "/quxiang/趣享GIF")
-        if (!dir.exists() && !dir.mkdirs()) {
-            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-            return
-        }
-        val targetFile = File(dir, GlobalUtil.currentDateString + ".gif")
-        if (targetFile.exists() && !targetFile.delete()) {
-            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-            return
-        }
-        if (!targetFile.createNewFile()) {
-            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-            return
-        }
-        val gifCacheFile = GlideUtil.getCacheFile(mFeed.gif)
-        if (gifCacheFile == null || !gifCacheFile.exists()) {
-            showToastOnUiThread(GlobalUtil.getString(R.string.gif_file_not_exist))
-            return
-        }
-        if (FileUtil.copyFile(gifCacheFile, targetFile)) {
-            ImageUtil.insertImageToSystem(this, targetFile.path)
-            showToastOnUiThread(String.format(GlobalUtil.getString(R.string.save_gif_success), targetFile.name), Toast.LENGTH_LONG)
-            runOnUiThread {
-                val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                val uri = Uri.fromFile(targetFile)
-                intent.data = uri
-                sendBroadcast(intent)
-            }
-        } else {
-            showToastOnUiThread(GlobalUtil.getString(R.string.save_failed))
-        }
     }
 
     /**
