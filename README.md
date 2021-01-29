@@ -1,4 +1,4 @@
-# 趣享GIF开源版 v1.0.3
+# 趣享GIF开源版 v1.0.3（已废弃，不再继续维护）
 
 <img src="screenshots/giffun_demo.gif" width="240" align="right" hspace="20">
 
