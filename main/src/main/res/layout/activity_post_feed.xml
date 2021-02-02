@@ -10,7 +10,7 @@
     android:background="@color/white"
     tools:context="com.quxianggif.feeds.ui.PostFeedActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

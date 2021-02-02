@@ -20,10 +20,10 @@ package com.quxianggif.common.adapter
 import android.annotation.TargetApi
 import android.app.Activity
 import android.os.Build
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint

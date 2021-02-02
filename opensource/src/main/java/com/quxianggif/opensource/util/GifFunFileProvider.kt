@@ -17,7 +17,7 @@
 
 package com.quxianggif.opensource.util
 
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 
 /**
  * APP升级时要使用的FileProvider。

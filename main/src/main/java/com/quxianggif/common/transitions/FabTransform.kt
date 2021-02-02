@@ -28,9 +28,9 @@ import android.graphics.Outline
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.support.annotation.ColorInt
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import android.transition.Transition
 import android.transition.TransitionValues
 import android.view.View

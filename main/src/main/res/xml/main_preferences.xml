@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.preference.PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:title="@string/title_gif_settings">
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
             android:key="@string/key_gif_play_control"
             android:title="@string/title_gif_play_control"/>
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:key="@string/key_alert_for_big_gif"
             android:defaultValue="true"
             android:summary="@string/summary_alert_when_play_big_gif_using_roaming"
             android:title="@string/title_alert_when_play_big_gif_using_roaming"/>
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:key="@string/key_auto_refresh"
             android:defaultValue="true"
             android:summary="@string/summary_refresh_feeds_when_app_started"
             android:title="@string/title_refresh_feeds_when_app_started"/>
 
-    </android.support.v7.preference.PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
-    <android.support.v7.preference.PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:title="@string/title_general">
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:key="@string/key_check_update"
             android:defaultValue="true"
             android:summary="@string/summary_check_update"
             android:title="@string/title_check_update"/>
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
             android:key="@string/key_clean_cache"
             android:summary="@string/summary_clean_cache"
             android:title="@string/title_clean_cache"/>
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
             android:key="@string/key_about"
             android:title="@string/title_about"/>
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
             android:key="@string/key_user_terms"
             android:title="@string/title_user_terms"/>
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
             android:key="@string/key_app_info"
             android:title="@string/title_app_info"/>
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
             android:key="@string/key_logout"
             android:title="@string/title_logout"/>
 
 
-    </android.support.v7.preference.PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
 
-</android.support.v7.preference.PreferenceScreen>
+</androidx.preference.PreferenceScreen>

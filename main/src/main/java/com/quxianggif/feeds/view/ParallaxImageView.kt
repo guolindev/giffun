@@ -22,9 +22,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
-import android.support.annotation.ColorInt
-import android.support.annotation.FloatRange
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorInt
+import androidx.annotation.FloatRange
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.util.Property
 import android.view.View

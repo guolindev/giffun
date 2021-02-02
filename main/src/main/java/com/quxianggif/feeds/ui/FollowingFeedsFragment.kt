@@ -19,8 +19,8 @@ package com.quxianggif.feeds.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SimpleItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View

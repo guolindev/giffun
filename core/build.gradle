@@ -8,7 +8,7 @@ android {
     defaultConfig {
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -27,8 +27,8 @@ androidExtensions {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    api "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
-    api "com.android.support:exifinterface:${SUPPORT_LIB_VERSION}"
+    api "androidx.appcompat:appcompat:${ANDROIDX_VERSION}"
+    api "androidx.exifinterface:exifinterface:${ANDROIDX_VERSION}"
     api 'com.squareup.okhttp3:okhttp:3.10.0'
     api 'com.google.code.gson:gson:2.8.5'
     api 'com.qiniu:qiniu-android-sdk:7.3.3'

@@ -19,7 +19,7 @@ package com.quxianggif.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.util.Pair
 import android.view.View
 import android.widget.ArrayAdapter

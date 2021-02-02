@@ -19,7 +19,7 @@ package com.quxianggif
 
 import android.app.Application
 import android.content.Context
-import android.support.multidex.MultiDex
+import androidx.multidex.MultiDex
 import com.quxianggif.core.GifFun
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure

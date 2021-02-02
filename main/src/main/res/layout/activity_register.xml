@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -34,7 +34,7 @@
                 android:textSize="18sp"
                 android:textColor="@drawable/move_on_bg"/>
 
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
 
         <TextView
@@ -53,7 +53,7 @@
             android:text="@string/select_nickname_please"
             android:textSize="22sp"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nicknameInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:layout_marginRight="20dp"
             app:errorTextAppearance="@style/EditTextErrorAppearance">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nicknameEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 android:maxLines="1"
                 android:maxLength="20"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
     

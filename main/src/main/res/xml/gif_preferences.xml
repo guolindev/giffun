@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.preference.SwitchPreferenceCompat
+    <androidx.preference.SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="@string/key_loop_gif_play"
         android:summary="@string/summary_loop_gif_play"
         android:title="@string/title_loop_gif_play"/>
 
-    <android.support.v7.preference.ListPreference
+    <androidx.preference.ListPreference
         android:defaultValue="3"
         android:entries="@array/gif_play_speed_entries"
         android:entryValues="@array/gif_play_speed_values"
@@ -16,4 +16,4 @@
         android:summary="@string/summary_gif_play_speed"
         android:title="@string/title_gif_play_speed"/>
 
-</android.support.v7.preference.PreferenceScreen>
+</androidx.preference.PreferenceScreen>

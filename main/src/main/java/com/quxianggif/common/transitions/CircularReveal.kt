@@ -20,7 +20,7 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Point
 import android.os.Build
-import android.support.annotation.IdRes
+import androidx.annotation.IdRes
 import android.transition.TransitionValues
 import android.transition.Visibility
 import android.util.AttributeSet

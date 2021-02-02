@@ -21,7 +21,7 @@ import android.animation.TimeInterpolator
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import android.util.ArrayMap
 import android.util.Property
 import android.view.View
