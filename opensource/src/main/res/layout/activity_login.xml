@@ -31,8 +31,12 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="70dp"
+            android:maxHeight="70dp"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
             android:layout_centerInParent="true"
             android:src="@drawable/logo_reverse"
             android:transitionName="@string/transition_logo_splash" />
